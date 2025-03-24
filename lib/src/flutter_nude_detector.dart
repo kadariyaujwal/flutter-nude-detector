@@ -52,9 +52,12 @@ class FlutterNudeDetector {
 
   /// Get path to model .tflite
   static Future<String> _getModel(String assetPath) async {
-    if (Platform.isAndroid) return 'flutter_assets/$assetPath';
-
-    final path = '${(await getApplicationSupportDirectory()).path}/$assetPath';
+    late String path;
+    if(Platform.isAndroid) {
+      path = '${(await getApplicationDocumentsDirectory()).path}/$assetPath';
+    } else {
+      path = '${(await getApplicationSupportDirectory()).path}/$assetPath';
+    }
     final file = File(path);
 
     await Directory(dirname(path)).create(recursive: true);
